@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <link rel="stylesheet" href="{% static 'css/notes.css' %}">
+  <title>MEMO</title>
+</head>
+<body>
+
+  <div class="side-nav">
+    <ul>
+      <li><a href="{% url 'index' %}">Home</a></li>
+      <li class="active"><a href="{% url 'notes' %}">Notes</a></li>
+      <li><a href="{% url 'tasks' %}">Tasks</a></li>
+    </ul>
+  </div>
+
+
+  <div class="nav">
+    <div class="user-img">
+      <div class="img">
+        <img src="{{user_profile.user_img.url}}" alt="" width="30px">
+      </div>
+      <h4>{{user_profile.username}} <i><a href="{% url 'logout' %}">logout</a></i></h4>
+    </div>
+
+    <div class="logo">
+      <p>MEMO/<span class="sub">NOTES</span></p>
+    </div>
+
+    <div class="search-part">
+      <form action="" class="search-main">
+        <input type='text' name='search-area' placeholder="Search" class="search-bar">
+        <!-- <input type="submit" class="add-note" value=""> -->
+        <button type="submit" class="add-note">
+          <span class="relative px-3" aria-label="Search"><svg width="1.2em" height="1.2em" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 pointer-events-none">
+              <path
+                d="M15.394 15.394a2.052 2.052 0 012.763-.126l.138.126 2.127 2.128.128.144a2.052 2.052 0 01-1.123 3.278l-.192.038-.208.018h-.181a2.045 2.045 0 01-1.205-.47l-.141-.129-2.127-2.128-.128-.144a2.052 2.052 0 01.025-2.6l.124-.135zM9.75 3a6.75 6.75 0 01.511 13.482l-.251.014-.271.005-.26-.005A6.75 6.75 0 019.75 3z"
+                fill="currentcolor" fill-rule="evenodd"></path>
+            </svg></span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="note-contain">
+    <div class="all-notes">
+      <div class="content-main">
+      {% for note in user_notes  %}
+      {% if note.id == active_note.id %}
+        <div class="card-content note-active">
+          <div class="content-topic">
+            <a href="{% url 'notes-active' note.id %}">
+              <p class="topic-main">{{note.title}}</p>
+              <p class="topic-sec">{{note.entry_date}}</p>
+            </a>
+          </div>
+          <div class="right-side">
+            <a class="delete-link" href="{% url 'notes-del' note.id %}">&#215;</a>
+          </div>
+        </div>
+        {% else %}
+        <div class="card-content">
+          <div class="content-topic">
+            <a href="{% url 'notes-active' note.id %}">
+              <p class="topic-main">{{note.title}}</p>
+              <p class="topic-sec">{{note.entry_date}}</p>
+            </a>
+          </div>
+          <div class="right-side">
+            <a class="delete-link" href="{% url 'notes-del' note.id %}">&#215;</a>
+          </div>
+        </div>
+      {% endif %}
+      {% endfor %}
+      </div>
+    </div>
+    <div class="active-note">
+      <form action="/note-edit/{{active_note.id}}" method="POST">
+        {% csrf_token %}
+        <div class="topic">
+          <input type="text" name="title" class="note_name" value="{{active_note.title}}">
+          <button type="submit" class="submit">Done</button>
+        </div>
+        <div class="note-body">
+          <textarea name="note_text" id="" cols="30" rows="10">{{active_note.note_text}}</textarea>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="add-btn">
+    <a href="{% url 'upload' %}">
+      <button class="icon">
+        <div class="add one"></div>
+      </button>
+    </a>
+    <!-- <button class="icon">
+      <div class="add one"></div>
+    </button> -->
+  </div>
+
+  {% if message %}
+  <div class="message">
+    <h5 style="color: white;">{{message}}</h5>
+  </div>
+  {% endif %}
+
+  <!-- <div class="content">
+    <h3>Welcome back, {{user_profile.username}}.</h3>
+    <div class="main">
+      <div class="notes">
+        <h4 class="title">Notes</h4>
+        <div class="card-content">
+          <div class="number">
+            <p>1</p>
+          </div>
+          <div class="content-topic">
+            <p class="topic-main">The First Note</p>
+            <p class="topic-sec">22-Nov-21</p>
+          </div>
+          <div class="delete-btn">
+            <div class="cancel one"></div>
+            <div class="cancel two"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tasks">
+        <h4 class="title">Tasks</h4>
+      </div>
+    </div> -->
+  </div>
+</body>
+</html>

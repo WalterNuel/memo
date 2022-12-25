@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <link rel="stylesheet" href="{% static 'css/signin.css' %}">
+  <title>MEMO</title>
+</head>
+<body>
+  <img src="{% static 'css/MEMO-background.jpg' %}" alt="" srcset="">
+      <div class="notes">
+        <h4 class="title">Sign Up</h4>
+        <div class="content-main">
+          <form action="" method="POST">
+            {% csrf_token %}
+            <div class="form-inner">
+              <div class="input-holder">
+                <input type="text" name="username" placeholder="Username">
+              </div>
+              <div class="input-holder">
+                <input type="password" name="password" placeholder="Password" id="">
+              </div>
+              <div class="input-holder">
+                <input type="password" name="password2" placeholder="Confirm Password" id="">
+              </div>
+              <div class="form-submit">
+                <button type="submit">Sign Up</button>
+              </div>
+              <p>Already have an account? <a href="{% url 'signin' %}">Sign In</a></p>
+            </div>
+          </form>
+        </div>
+      </div>
+</body>
+</html>

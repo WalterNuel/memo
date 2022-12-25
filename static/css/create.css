@@ -1,0 +1,67 @@
+.main {
+  margin-top: 4rem;
+  height: auto;
+  width: auto;
+}
+
+.form-main {
+  padding: 8px 6px;
+  border-radius: 0 0 18px 18px;
+}
+
+input {
+  padding: 3px;
+  font-size: 1.2rem;
+}
+
+label {
+  margin-bottom: 3px;
+}
+
+textarea {
+  resize: none;
+  font-size: 1.2rem;
+  font-family: inherit;
+  font-weight: lighter;
+  padding: 3px;
+}
+
+textarea:active,
+textarea:focus,
+input:focus {
+  outline: none;
+}
+
+.top {
+  display: grid;
+  margin: 10px 0;
+}
+
+.bottom {
+  margin-top: 10px;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+}
+
+.bottom .btn {
+  border: none;
+  border-radius: 7px;
+  padding: 5px;
+  font-size: 1.2rem;
+  background-color: var(--main-color);
+  color: var(--second-color);
+}
+
+
+/* .active-task::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50px;
+  background-color: var(--main-color);
+  right: 6px;
+  top: 32px;
+  box-shadow: 0px 1px 6px 0px rgba(31, 31, 31, 0.658);
+} */

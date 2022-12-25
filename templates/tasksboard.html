@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+
+{% load static %}
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="{% static 'css/main.css' %}">
+  <title>MEMO</title>
+</head>
+<body>
+
+  <div class="side-nav">
+    <ul>
+      <li><a href="{% url 'index' %}">Home</a></li>
+      <li><a href="{% url 'notes' %}">Notes</a></li>
+      <li class="active"><a href="{% url 'tasks' %}">Tasks</a></li>
+    </ul>
+  </div>
+
+
+  <div class="nav">
+    <div class="user-img">
+      <div class="img" style="height:30px;">
+        <img src="{{user_profile.user_img.url}}" alt="" width="30px">
+      </div>
+      <h4>{{user_profile.username}} <i><a href="{% url 'logout' %}">logout</a></i></h4>
+    </div>
+
+    <div class="logo">
+      <p>MEMO/<span class="sub">TASKS</span></p>
+    </div>
+
+    <div class="search-part">
+      <form action="" class="search-main">
+        <input type='text' name='search-area' placeholder="Search" class="search-bar">
+        <!-- <input type="submit" class="add-note" value=""> -->
+        <button type="submit" class="add-note">
+          <span class="relative px-3" aria-label="Search"><svg width="1.2em" height="1.2em" viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 pointer-events-none">
+              <path
+                d="M15.394 15.394a2.052 2.052 0 012.763-.126l.138.126 2.127 2.128.128.144a2.052 2.052 0 01-1.123 3.278l-.192.038-.208.018h-.181a2.045 2.045 0 01-1.205-.47l-.141-.129-2.127-2.128-.128-.144a2.052 2.052 0 01.025-2.6l.124-.135zM9.75 3a6.75 6.75 0 01.511 13.482l-.251.014-.271.005-.26-.005A6.75 6.75 0 019.75 3z"
+                fill="currentcolor" fill-rule="evenodd"></path>
+            </svg></span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="main">
+      <div class="notes">
+        <h4 class="title">Tasks ({{tasks_length}})</h4>
+        <div class="content-main">
+          {% if tasks_length == 0 %}
+          <div class="none">
+            <h3>Create a task</h3>
+          </div>
+          {% else %}
+          {% for task in user_tasks  %}
+          {% if task.completed == False %}
+          <div class="card-content">
+            <div class="content-topic">
+              <a href="{% url 'task-confirm' task.id %}">
+                <div class="check-mark"></div>
+              </a>
+              <a href="{% url 'task-active' task.id %}">
+                <p class="topic-main">{{task.task}}</p>
+                <p class="topic-sec">{{task.create}}</p>
+              </a> 
+            </div>
+
+            <div class="right-side">
+              <a class="delete-link" href="">&#215;</a>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+          {% endif %}
+          
+          {% if tasks_length != 0 %}
+          <h5 class="completed">Completed ({{length}})</h5>
+          {% if length == 0 %}
+          <div class="none">
+            <h3>Complete a note</h3>
+          </div>
+          {% else %}
+          {% for task in user_tasks  %}
+          {% if task.completed == True %}
+          <div class="card-content">
+            <div class="content-topic complete">
+              <a href="{% url 'task-confirm' task.id %}">
+                <div class="check-mark complete"></div>
+              </a>
+              <a href="{% url 'task-active' task.id %}">
+                <p class="topic-main">{{task.task}}</p>
+                <p class="topic-sec">{{task.create}}</p>
+              </a> 
+            </div>
+
+            <div class="right-side">
+              <a class="delete-link" href="">&#215;</a>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+          {% endif %}
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- <div class="tasks">
+        <h4 class="title">Tasks ({{tasks_length}})</h4>
+        <div class="content-main">
+          {% if tasks_length == 0 %}
+          <div class="none">
+            <h3>Create a task</h3>
+          </div>
+          {% else %}
+          {% for task in user_tasks  %}
+          {% if task.completed == False %}
+          <div class="card-content">
+            <div class="content-topic">
+              <a href="{% url 'task-confirm' task.id %}">
+                <div class="check-mark"></div>
+              </a>
+              <a href="">
+                <p class="topic-main">{{task.task}}</p>
+                <p class="topic-sec">{{task.create}}</p>
+              </a> 
+            </div>
+
+            <div class="right-side">
+              <a class="delete-link" href="">&#215;</a>
+            </div>
+          </div>
+          {% else %}
+          <div class="card-content">
+            <div class="content-topic complete">
+              <a href="{% url 'task-confirm' task.id %}">
+                <div class="check-mark complete"></div>
+              </a>
+              <a href="">
+                <p class="topic-main">{{task.task}}</p>
+                <p class="topic-sec">{{task.create}}</p>
+              </a> 
+            </div>
+
+            <div class="right-side">
+              <a class="delete-link" href="">&#215;</a>
+            </div>
+          </div>
+          {% endif %}
+          {% endfor %}
+          {% endif %}
+        </div>
+      </div> -->
+
+
+      {% comment %} <div class="add-list">
+        <div class="popup-list">
+          <p><a href="{% url 'upload' %}">New Note</a></p>
+          <p>New Task</p>
+        </div>
+      </div> {% endcomment %}
+      <div class="add-btn">
+          <a href="{% url 'task-create' %}">
+            <button class="icon">
+              <div class="add one"></div>
+            </button>
+          </a>
+      </div>
+    </div>
+  </div>
+
+  {% for message in message %}
+  <div class="message">
+    <h5 style="color: white;">{{message}}</h5>
+  </div>
+  {% endfor %}
+
+  <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>

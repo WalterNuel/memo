@@ -1,0 +1,15 @@
+.card-content {
+  position: relative;
+}
+
+.active-task::after {
+  content: '';
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50px;
+  background-color: var(--main-color);
+  left: -5px;
+  top: 25px;
+  box-shadow: 0px 1px 6px 0px rgba(31, 31, 31, 0.658);
+} 
