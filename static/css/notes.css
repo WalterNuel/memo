@@ -92,17 +92,18 @@ form {
 .note-body textarea {
   /* margin: 10px; */
   width: 97%;
-  border: 1px solid;
+  border-radius: 10px;
   padding: 7px;
   font-size: 20px;
   font-family: inherit;
   height: 95%;
   resize: none;
+  border: none;
 }
 
 .note-body textarea:focus {
   outline: 0;
-  border: none;
+  border: 1px solid var(--main-color);
 }
 
 
@@ -130,6 +131,10 @@ div.card-content:last-of-type {
   left: 6px;
   top: 32px;
   box-shadow: 0px 1px 6px 0px rgba(31, 31, 31, 0.658);
+}
+
+.card-content:hover {
+  transition: .2s;
 }
 
 div.nothing {
@@ -208,8 +213,15 @@ div.nothing {
   border-radius: 7px;
   border: none;
   padding: 8px;
+  cursor: pointer;
+  color: var(--main-color);
   background-color: var(--scroll);
+  transition: .3s;
 }
+.submit:hover {
+  transform: scale(1.1);
+}
+
 
 @keyframes enter {
   0% {

@@ -21,3 +21,76 @@
   border-bottom: none;
   border-radius: 0 0 19px 0;
 }
+
+{% if task.id == active.id %}
+<div class="card-content active-task">
+  <div class="content-topic">
+    <a href="{% url 'task-confirm' task.id %}">
+      <div class="check-mark"></div>
+    </a>
+    <a href="{% url 'task-active' task.id %}">
+      <p class="topic-main">{{task.task}}</p>
+      <p class="topic-sec">{{task.create}}</p>
+    </a> 
+  </div>
+
+  <div class="right-side">
+    <a class="delete-link" href="">&#215;</a>
+  </div>
+</div>
+{% else %}
+<div class="card-content">
+  <div class="content-topic">
+    <a href="{% url 'task-confirm' task.id %}">
+      <div class="check-mark"></div>
+    </a>
+    <a href="{% url 'task-active' task.id %}">
+      <p class="topic-main">{{task.task}}</p>
+      <p class="topic-sec">{{task.create}}</p>
+    </a> 
+  </div>
+
+  <div class="right-side">
+    <a class="delete-link" href="">&#215;</a>
+  </div>
+</div>
+{% endif %}
+{% endif %}
+
+
+
+{% if task.completed == True %}
+{% if task.id == active.id %}
+<div class="card-content active-task">
+  <div class="content-topic">
+    <a href="{% url 'task-confirm' task.id %}">
+      <div class="check-mark"></div>
+    </a>
+    <a href="{% url 'task-active' task.id %}">
+      <p class="topic-main">{{task.task}}</p>
+      <p class="topic-sec">{{task.create}}</p>
+    </a> 
+  </div>
+
+  <div class="right-side">
+    <a class="delete-link" href="">&#215;</a>
+  </div>
+</div>
+{% else %}
+<div class="card-content">
+  <div class="content-topic complete">
+    <a href="{% url 'task-confirm' task.id %}">
+      <div class="check-mark complete"></div>
+    </a>
+    <a href="{% url 'task-active' task.id %}">
+      <p class="topic-main">{{task.task}}</p>
+      <p class="topic-sec">{{task.create}}</p>
+    </a> 
+  </div>
+
+  <div class="right-side">
+    <a class="delete-link" href="">&#215;</a>
+  </div>
+</div>
+{% endif %}
+{% endif %}

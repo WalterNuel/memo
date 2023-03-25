@@ -32,6 +32,8 @@ def signup(request):
     username = request.POST['username']
     password = request.POST['password']
     password2 = request.POST['password2']
+    profile = username[0]
+    
 
     if password == password2:
       if User.objects.filter(username=username).exists():
@@ -45,7 +47,7 @@ def signup(request):
         auth.login(request, user_login)
 
         user_model = User.objects.get(username=username)
-        new_profile = Profile.objects.create(username=user_model)
+        new_profile = Profile.objects.create(username=user_model, profile=profile)
         new_profile.save()
         return redirect('index')
     else:
@@ -67,8 +69,12 @@ def index(request):
   user_acc = User.objects.get(username=request.user.username)
   user_profile = Profile.objects.get(username=user_acc)
 
+  if user_profile.profile == "U":
+    user_profile.profile = user_acc.username[0]
+    user_profile.save()
+
   user_notes = Note.objects.filter(author=user_acc).order_by('-entry_date')
-  user_tasks = Task.objects.filter(author=user_acc).order_by('-create')
+  user_tasks = Task.objects.filter(author=user_acc).order_by('-create')+
 
   notes_length = len(user_notes)
   tasks_length = len(user_tasks)
@@ -135,6 +141,27 @@ def task_create(request):
 
 
 @login_required(login_url='signin')
+def task_edit(request, uuid):
+  user_acc = User.objects.get(username=request.user.username)
+  user_profile = Profile.objects.get(username=user_acc)
+  task_main = Task.objects.get(id=uuid, author=user_acc)
+
+  if request.method == 'POST':
+    task = request.POST['title']
+    description = request.POST['description']
+
+    task_main.task = task
+    task_main.description = description
+
+    task_main.save()
+
+    return redirect('/tasks/'+str(uuid))
+  
+  else:
+    return redirect('/tasks/'+str(uuid))
+
+
+@login_required(login_url='signin')
 def notes(request):
   user_acc = User.objects.get(username=request.user.username)
   user_profile = Profile.objects.get(username=user_acc)
@@ -163,7 +190,17 @@ def note_upload(request):
   title = f'New Note ({notes_length + 1})'
   note_text = ''
   entry_date = timezone.now()
+  main = title
+  
+  name_exists = Note.objects.filter(author=author, title__icontains=main)
+  if name_exists.exists():
+    length = len(name_exists)
+    title = f'{title}-{length + 1}'
+    
+  else:
+    pass
 
+    
   new_note = Note.objects.create(author=author, title=title, note_text=note_text, entry_date=entry_date)
 
   new_note.id

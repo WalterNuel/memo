@@ -10,6 +10,7 @@ User = get_user_model()
 class Profile(models.Model):
   username = models.ForeignKey(User, on_delete=models.CASCADE)
   user_img = models.ImageField(upload_to='user_images', default='memo-black-bg.png')
+  profile = models.CharField(max_length=3, default="U", null=False)
 
   def name(self):
     return self.username

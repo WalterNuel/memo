@@ -14,28 +14,35 @@
 
   <div class="side-nav">
     <ul>
-      <li class="active"><a href="{% url 'index' %}">Home</a></li>
-      <li><a href="{% url 'notes' %}">Notes</a></li>
-      <li><a href="{% url 'tasks' %}">Tasks</a></li>
+      <li class="active"><a href="{% url 'index' %}"><button>Home</button></a></li>
+      <li><a href="{% url 'notes' %}"><button>Notes</button></a></li>
+      <li><a href="{% url 'tasks' %}"><button>Tasks</button></a></li>
     </ul>
+
+    <footer class="visual">
+      <ul>
+        <li><button class="side-layout active"><div class="box-one"></div></button></li>
+        <li><button class="scroll-layout"><div class="box"></div></button></li>
+      </ul>
+    </footer>
   </div>
 
 
   <div class="nav">
     <div class="user-img">
       <div class="img" style="height:30px;">
-        <img src="{{user_profile.user_img.url}}" alt="" width="30px">
+        <p>{{user_profile.profile}}</p>
       </div>
       <h4>{{user_profile.username}} <i><a href="{% url 'logout' %}">logout</a></i></h4>
     </div>
 
     <div class="logo">
-      <p>MEMO</p>
+      <p>m<span class="logo-name">emo</span></p>
     </div>
 
     <div class="search-part">
       <form action="" class="search-main">
-        <input type='text' name='search-area' placeholder="Search" class="search-bar">
+        <input type='text' name='search-area' placeholder="Search: Notes and Tasks" class="search-bar">
         <!-- <input type="submit" class="add-note" value=""> -->
         <button type="submit" class="add-note">
           <span class="relative px-3" aria-label="Search"><svg width="1.2em" height="1.2em" viewBox="0 0 24 24"
@@ -49,95 +56,113 @@
     </div>
   </div>
 
+
   <div class="content">
     <h3>Welcome back, {{user_profile.username}}.</h3>
     <div class="main">
-      <div class="notes">
-        <h4 class="title">Notes ({{notes_length}})</h4>
-        <div class="content-main">
-          {% if notes_length == 0 %}
-          <div class="none">
-            <h3>Create a note</h3>
-          </div>
-          {% else %}
-          {% for note in user_notes  %}
-          <div class="card-content">
-            <div class="content-topic">
-              <a href="{% url 'notes-active' note.id %}">
-                <p class="topic-main">{{note.title}}</p>
-                <p class="topic-sec">{{note.entry_date}}</p>
-              </a> 
+      <div class="items">
+        <div class="notes">
+          <h4 class="title">Notes ({{notes_length}})</h4>
+          <div class="content-main">
+            {% if notes_length == 0 %}
+            <div class="none">
+              <h3>Create a note</h3>
             </div>
-
-            <div class="right-side">
-              <a class="delete-link" href="{% url 'notes-delete' note.id %}">&#215;</a>
+            {% else %}
+            {% for note in user_notes  %}
+            <div class="card-content">
+              <div class="content-topic">
+                <a href="{% url 'notes-active' note.id %}">
+                  <p class="topic-main">{{note.title}}</p>
+                  <p class="topic-sec">{{note.entry_date}}</p>
+                </a> 
+              </div>
+  
+              <div class="right-side">
+                <a class="delete-link" href="{% url 'notes-delete' note.id %}">&#215;</a>
+              </div>
             </div>
+            {% endfor %}
+            {% endif %}
           </div>
-          {% endfor %}
-          {% endif %}
         </div>
+  
+        <div class="tasks">
+          <h4 class="title">Tasks ({{tasks_length}})</h4>
+          <div class="content-main">
+            {% if tasks_length == 0 %}
+            <div class="none">
+              <h3>Create a task</h3>
+            </div>
+            {% else %}
+            {% for task in user_tasks  %}
+            {% if task.completed == False %}
+            <div class="card-content">
+              <div class="content-topic">
+                <a href="{% url 'task-confirm' task.id %}">
+                  <div class="check-mark"></div>
+                </a>
+                <a href="{% url 'task-active' task.id %}">
+                  <p class="topic-main">{{task.task}}</p>
+                  <p class="topic-sec">{{task.create}}</p>
+                </a> 
+              </div>
+  
+              <div class="right-side">
+                <a class="delete-link" href="">&#215;</a>
+              </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            
+            {% if tasks_length != 0 %}
+            {% if tasks_length == length %}
+            <h5 class="completed">Completed All</h5>
+            {% else %}
+            <h5 class="completed">Completed ({{length}})</h5>
+            {% endif %}
+            {% if length == 0 %}
+            <div class="none">
+              <h3>Complete a note</h3>
+            </div>
+            {% else %}
+            {% for task in user_tasks  %}
+            {% if task.completed == True %}
+            <div class="card-content">
+              <div class="content-topic complete">
+                <a href="{% url 'task-confirm' task.id %}">
+                  <div class="check-mark complete"></div>
+                </a>
+                <a href="{% url 'task-active' task.id %}">
+                  <p class="topic-main">{{task.task}}</p>
+                  <p class="topic-sec">{{task.create}}</p>
+                </a> 
+              </div>
+  
+              <div class="right-side">
+                <a class="delete-link" href="">&#215;</a>
+              </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endif %}
+            {% endif %}
+          </div>
+        </div>
+        
       </div>
 
-      <div class="tasks">
-        <h4 class="title">Tasks ({{tasks_length}})</h4>
-        <div class="content-main">
-          {% if tasks_length == 0 %}
-          <div class="none">
-            <h3>Create a task</h3>
-          </div>
-          {% else %}
-          {% for task in user_tasks  %}
-          {% if task.completed == False %}
-          <div class="card-content">
-            <div class="content-topic">
-              <a href="{% url 'task-confirm' task.id %}">
-                <div class="check-mark"></div>
-              </a>
-              <a href="{% url 'task-active' task.id %}">
-                <p class="topic-main">{{task.task}}</p>
-                <p class="topic-sec">{{task.create}}</p>
-              </a> 
-            </div>
-
-            <div class="right-side">
-              <a class="delete-link" href="">&#215;</a>
-            </div>
-          </div>
-          {% endif %}
-          {% endfor %}
-          {% endif %}
-          
-          {% if tasks_length != 0 %}
-          <h5 class="completed">Completed ({{length}})</h5>
-          {% if length == 0 %}
-          <div class="none">
-            <h3>Complete a note</h3>
-          </div>
-          {% else %}
-          {% for task in user_tasks  %}
-          {% if task.completed == True %}
-          <div class="card-content">
-            <div class="content-topic complete">
-              <a href="{% url 'task-confirm' task.id %}">
-                <div class="check-mark complete"></div>
-              </a>
-              <a href="{% url 'task-active' task.id %}">
-                <p class="topic-main">{{task.task}}</p>
-                <p class="topic-sec">{{task.create}}</p>
-              </a> 
-            </div>
-
-            <div class="right-side">
-              <a class="delete-link" href="">&#215;</a>
-            </div>
-          </div>
-          {% endif %}
-          {% endfor %}
-          {% endif %}
-          {% endif %}
+      <div class="fade hide one">
+        <div class="btn left-slide">
+          <div class="arrow-left"></div>
         </div>
       </div>
-
+      <div class="fade hide two">
+        <div class="btn right-slide">
+          <div class="arrow-right"></div>
+        </div>
+      </div>
 
       <div class="add-list">
         <div class="popup-list">
