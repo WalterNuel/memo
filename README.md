@@ -18,6 +18,21 @@ Memo is a notes/todolist app that allows users to login and create their notes, 
 - JavaScript
 - SQLite
 
+## Screen Shots
+<table>
+  <tr>
+    <td><img src="memo-sign.jpg" alt="Sign In/Sign Up Screen"></td>
+    <td><img src="memo-screen.jpg" alt="Home Screen"></td>
+  </tr>
+</table>
+<table>
+  <tr>
+    <td><img src="memo-note.jpg" alt="Notes Screen"></td>
+    <td><img src="memo-tasks.jpg" alt="Tasks Screen"></td>
+  </tr>
+</table>
+
+
 ## Installation
 
 1. Clone the repository:
